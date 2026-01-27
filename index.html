@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planet Mars - Experience</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="canvas-container"></div>
+
+    <section id="hero">
+        <div class="hero-content">
+            <div class="subtitle">THE RED PLANET</div>
+            <h1 class="title">MARS</h1>
+            <div class="divider"></div>
+            <p class="description">Scroll down to explore the mysteries and ancient secrets await humanity's next giant leap.</p>
+        </div>
+    </section>
+
+    <section id="details">
+        <div class="details-container">
+            <div class="text-column">
+                <div class="subtitle">FOURTH ROCK FROM THE SUN</div>
+                <h2 class="details-title">A DESERT WORLD</h2>
+                <div class="divider divider-left"></div>
+                <p>
+                    Mars is a dusty, cold, desert world with a very thin atmosphere. 
+                    Billions of years ago, there was a strong evidence that Mars was wetter and warmer, with a thick atmosphere.
+                </p>
+                <p>
+                    It is home to Valles Marineris, a canyon system that runs along the Martian equator, and Olympus Mons, the largest volcano in the solar system.
+                </p>
+                <div class="btn-group">
+                    <a href="#" class="btn btn-primary">MISSION DETAILS</a>
+                    <a href="#" class="btn btn-secondary">WATCH TRAILER</a>
+                </div>
+            </div>
+             <div class="spacer-column"></div>
+        </div>
+    </section>
+
+    <section id="full-view">
+        <div class="full-view-content">
+            <h2 class="impact-title">EXPLORE THE HORIZON</h2>
+            <p>Witness the scale of the Red Planet up close.</p>
+        </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
