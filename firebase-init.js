@@ -48,21 +48,7 @@ btnLogin.addEventListener('click', async () => {
     }
 });
 
-// Update UI based on Auth State
-watchAuthState((user) => {
-    if (user) {
-        const username = user.email.split('@')[0];
-        loginTrigger.textContent = `Welcome, ${username}`;
-        loginTrigger.onclick = (e) => {
-            e.preventDefault();
-            if (confirm("Logout?")) logoutUser();
-        };
-    } else {
-        loginTrigger.textContent = "Login";
-        loginTrigger.onclick = (e) => { e.preventDefault(); showModal(); };
-    }
-
-// Add this inside firebase-init.js if it's not already there
+// Handle Signup
 btnSignup.addEventListener('click', async () => {
     try {
         await signupUser(userEmail.value, userPass.value);
@@ -74,4 +60,23 @@ btnSignup.addEventListener('click', async () => {
         authMessage.style.color = "#ff6b6b";
     }
 });
+
+// Update UI based on Auth State
+watchAuthState((user) => {
+    if (user) {
+        const username = user.email.split('@')[0];
+        loginTrigger.textContent = `Welcome, ${username}`;
+        
+        // When clicked, redirect to user.html (dashboard)
+        loginTrigger.onclick = (e) => {
+            e.preventDefault();
+            window.location.href = 'user.html'; // Redirect to dashboard
+        };
+    } else {
+        loginTrigger.textContent = "Login";
+        loginTrigger.onclick = (e) => { 
+            e.preventDefault(); 
+            showModal(); 
+        };
+    }
 });

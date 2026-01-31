@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - Mars Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-logo">MARS<span>EXPLORER</span></div>
+        <div class="nav-links">
+            <a href="index.html#hero">Home</a>
+            <a href="index.html#details">About</a>
+            <a href="index.html">Leaderboard</a>
+            <a href="index.html">Contact Us</a>
+            <a href="user.html" class="active">Profile</a>
+        </div>
+    </nav>
+    
+    <div id="profile-container">
+        <h2 class="details-title">Welcome, <span id="welcome-name">Explorer</span></h2>
+        <div id="loading">Loading user data...</div>
+        
+        <div id="user-info" style="display:none;">
+            <p><strong>Email:</strong> <span id="display-email"></span></p>
+            <p><strong>Account Created:</strong> <span id="display-created"></span></p>
+            <p><strong>Last Login:</strong> <span id="display-login"></span></p>
+            
+            <hr class="divider" style="margin: 20px 0;">
+            
+            <h3>Inventory Samples</h3>
+            <ul id="display-samples">
+            </ul>
+            
+            <button id="logout-btn" class="btn btn-secondary">Logout</button>
+        </div>
+    </div>
+
+    <script type="module" src="user-profile.js"></script>
+</body>
+</html>
