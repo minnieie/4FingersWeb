@@ -102,8 +102,8 @@ function animate() {
     const delta = clock.getDelta(); // Time-based movement for consistent speed
     
     if (mars) {
-        // Constant slow idle spin (0.2 radians per second)
-        mars.rotation.y += 0.2 * delta; 
+        // Constant slow idle spin (0.1 radians per second)
+        mars.rotation.y += 0.1 * delta; 
     }
     
     renderer.render(scene, camera);
