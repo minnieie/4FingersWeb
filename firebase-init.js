@@ -101,7 +101,10 @@ btnLogin.addEventListener('click', async () => {
     if (result.success) {
         authMessage.textContent = "Welcome back, Commander!";
         authMessage.style.color = "#4CAF50";
-        setTimeout(hideModal, 1500);
+        setTimeout(() => {
+            hideModal();
+            window.location.href = 'user.html';
+        }, 1500);
     } else {
         authMessage.textContent = result.message;
         authMessage.style.color = "#ff6b6b";
@@ -133,7 +136,7 @@ btnSignup.addEventListener('click', async () => {
         return;
     }
     
-    authMessage.textContent = "Preparing your ship...";
+    authMessage.textContent = "Preparing your ship and creating profile...";
     authMessage.style.color = "#ffffff";
 
     const result = await signupUser(email, password);
@@ -142,14 +145,16 @@ btnSignup.addEventListener('click', async () => {
         authMessage.textContent = "Account created! Welcome, Explorer.";
         authMessage.style.color = "#4CAF50";
         
-        // Optional: Automatically log in after signup
-        // await loginUser(email, password);
+        // Automatically log in after signup
+        const loginResult = await loginUser(email, password);
         
-        setTimeout(() => {
-            hideModal();
-            // Optionally redirect to user profile
-            window.location.href = 'user.html';
-        }, 1500);
+        if (loginResult.success) {
+            setTimeout(() => {
+                hideModal();
+                // Redirect to user profile
+                window.location.href = 'user.html';
+            }, 1500);
+        }
     } else {
         authMessage.textContent = result.message;
         authMessage.style.color = "#ff6b6b";
