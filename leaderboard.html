@@ -23,6 +23,39 @@
             <button id="login-trigger" class="btn-login-nav">Login</button>
         </div>
     </nav>
+    
+     <div id="auth-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title">Welcome, Explorer</h2>
+            <p id="auth-message"></p>
+            
+            <!-- Login Form (Default) -->
+            <div id="login-form">
+                <div class="input-group">
+                    <input type="email" id="login-email" placeholder="Email Address">
+                    <input type="password" id="login-pass" placeholder="Password">
+                </div>
+                <div class="modal-buttons">
+                    <button id="btn-login" class="btn btn-primary">Sign In</button>
+                    <button id="switch-to-signup" class="btn btn-secondary">Create Account</button>
+                </div>
+            </div>
+            
+            <!-- Signup Form (Hidden by default) -->
+            <div id="signup-form" style="display: none;">
+                <div class="input-group">
+                    <input type="email" id="signup-email" placeholder="Email Address">
+                    <input type="password" id="signup-pass" placeholder="Password (min 6 characters)">
+                    <input type="password" id="signup-confirm-pass" placeholder="Confirm Password">
+                </div>
+                <div class="modal-buttons">
+                    <button id="btn-signup" class="btn btn-primary">Create Account</button>
+                    <button id="switch-to-login" class="btn btn-secondary">Back to Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="leaderboard-container">
         <h1 class="leaderboard-title">MARS EXPLORER LEADERBOARD</h1>
@@ -116,6 +149,10 @@
             </div>
         </div>
     </div>
+
+    <footer>
+        <p>© 2026 4Fingers Mars Explorer Project | Educational Research Only</p>
+    </footer>
 
     <!-- Import Firebase -->
     <script type="module" src="firebase-init.js"></script>

@@ -3,15 +3,15 @@ import { ref, get } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-dat
 
 // Image mapping for samples
 const sampleImages = {
-    'Basalt': 'images/basalt.png',
-    'Carbonate_Rock': 'images/carbonateRock.png',
-    'Gypsum': 'images/gypsum.png',
-    'Regolith': 'images/regolith.png',
-    'Smecite_Clay': 'images/smeciteClay.png',
-    'Water': 'images/water.png',
+    'basalt': 'images/basalt.png',
+    'carbonateRock': 'images/carbonateRock.png',
+    'gypsum': 'images/gypsum.png',
+    'regolith': 'images/regolith.png',
+    'smeciteClay': 'images/smeciteClay.png',
+    'water': 'images/water.png',
     
     // Tool images (you can add these later)
-    'Extractor': 'images/Extractor.png',
+    'extractor': 'images/extractor.png',
     'Sample Container': 'images/default-tool.png',
     'Laser Spectrometer': 'images/default-tool.png',
 };
