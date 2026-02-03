@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Mars Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="contact-page">
+
+    <nav class="navbar">
+        <div class="nav-logo">MARS<span>EXPLORER</span></div>
+        <div class="nav-links">
+            <a href="index.html#hero">Home</a>
+            <a href="index.html#details">About</a>
+            <a href="leaderboard.html">Leaderboard</a>
+            <a href="contactus.html" class="active">Contact Us</a>
+            <button id="login-trigger" class="btn-login-nav">Login</button>
+        </div>
+    </nav>
+
+     <div id="auth-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title">Welcome, Explorer</h2>
+            <p id="auth-message"></p>
+            
+            <!-- Login Form (Default) -->
+            <div id="login-form">
+                <div class="input-group">
+                    <input type="email" id="login-email" placeholder="Email Address">
+                    <input type="password" id="login-pass" placeholder="Password">
+                </div>
+                <div class="modal-buttons">
+                    <button id="btn-login" class="btn btn-primary">Sign In</button>
+                    <button id="switch-to-signup" class="btn btn-secondary">Create Account</button>
+                </div>
+            </div>
+            
+            <!-- Signup Form (Hidden by default) -->
+            <div id="signup-form" style="display: none;">
+                <div class="input-group">
+                    <input type="email" id="signup-email" placeholder="Email Address">
+                    <input type="password" id="signup-pass" placeholder="Password (min 6 characters)">
+                    <input type="password" id="signup-confirm-pass" placeholder="Confirm Password">
+                </div>
+                <div class="modal-buttons">
+                    <button id="btn-signup" class="btn btn-primary">Create Account</button>
+                    <button id="switch-to-login" class="btn btn-secondary">Back to Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-banner">
+        <div class="hero-content">
+            <h1>Contact Us</h1>
+            <p>The 4Fingers Project Office receives communications from students and space enthusiasts worldwide. We endeavor to provide timely information about our Mars simulation.</p>
+        </div>
+    </div>
+
+    <div class="container contact-container">
+        <p class="intro-text">
+            Mars Explorer is a Year 2.2 integrated project by 4Fingers that integrates Unity XR development, Firebase backend systems, 3D environment creation, and UX design. It is an educational Mars simulation designed to help students learn about rocks found on Mars, discover new scientific information, and explore Mars’s potential habitability.
+        </p>
+
+        <h2 class="section-title">Current Team:</h2>
+        <div class="team-grid">
+            <div class="team-member">
+                <span>Project Lead</span>
+                <h3>Richard Wong</h3>
+                <p>Back End Developer, Unity</p>
+            </div>
+            <div class="team-member">
+                <span>Database</span>
+                <h3>Toh Rui Min</h3>
+                <p>Website, Firebase, Unity</p>
+            </div>
+            <div class="team-member">
+                <span>UI/UX Designer</span>
+                <h3>Geng Bai Hui</h3>
+                <p>Figma, Unity, Canva</p>
+            </div>
+            <div class="team-member">
+                <span>3D Designer</span>
+                <h3>Mei Yifan</h3>
+                <p>Maya, Blender, Unity</p>
+            </div>
+        </div>
+
+    <footer>
+        <p>© 2026 4Fingers Mars Explorer Project | Educational Research Only</p>
+    </footer>
+
+    <script type="module" src="firebase-init.js"></script>
+</body>
+</html>

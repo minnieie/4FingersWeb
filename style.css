@@ -1332,6 +1332,223 @@ body:has(.leaderboard-container) .navbar {
         box-shadow: 0 15px 40px rgba(100, 150, 255, 0.5);
     }
 }
+
+/* =========================================== */
+/* CONTACT US PAGE STYLES                     */
+/* =========================================== */
+
+/* Contact Page Background */
+body.contact-page {
+    background: linear-gradient(135deg, #0b0d17 0%, #1a1025 50%, #0b0d17 100%) !important;
+    background-attachment: fixed;
+    color: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* Active link in navbar */
+.nav-links a.active {
+    color: #ef8d6e !important;
+    opacity: 1 !important;
+}
+
+/* Hero Banner */
+.hero-banner {
+    position: relative;
+    height: 500px;
+    background: linear-gradient(rgba(11, 13, 23, 0.7), rgba(11, 13, 23, 0.9)), 
+                url('images/mars.png') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    padding: 0 10%;
+    color: white;
+    margin-top: 80px; /* Account for fixed navbar */
+}
+
+.hero-content h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 4.5rem;
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: -1px;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.hero-content p {
+    max-width: 500px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-top: 20px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Contact Container */
+.contact-container {
+    max-width: 1000px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+.intro-text {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.8;
+    margin-bottom: 50px;
+    border-bottom: 1px solid rgba(239, 141, 110, 0.3);
+    padding-bottom: 40px;
+}
+
+/* Section Titles */
+.section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    margin-bottom: 30px;
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #ef8d6e, #f9a17b);
+    border-radius: 2px;
+}
+
+/* Team Grid */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    margin-bottom: 80px;
+}
+
+.team-member {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(239, 141, 110, 0.2);
+    padding: 30px 25px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.team-member:hover {
+    background: rgba(239, 141, 110, 0.1);
+    border-color: rgba(239, 141, 110, 0.4);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.team-member span {
+    color: #ef8d6e;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.team-member h3 {
+    color: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin: 0 0 10px 0;
+}
+
+.team-member p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.6;
+}   
+
+/* Footer */
+footer {
+    background: rgba(11, 13, 23, 0.9);
+    padding: 40px 0;
+    text-align: center;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    border-top: 1px solid rgba(239, 141, 110, 0.2);
+    margin-top: 100px;
+    backdrop-filter: blur(10px);
+}
+
+footer p {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .hero-banner {
+        height: 400px;
+        padding: 0 5%;
+        margin-top: 70px;
+    }
+    
+    .hero-content h1 {
+        font-size: 3.5rem;
+    }
+    
+    .hero-content p {
+        font-size: 1rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+    
+    .contact-form {
+        padding: 40px 30px;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero-banner {
+        height: 350px;
+        text-align: center;
+    }
+    
+    .hero-content h1 {
+        font-size: 2.8rem;
+    }
+    
+    .hero-content p {
+        max-width: 100%;
+    }
+    
+    .team-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .contact-form {
+        padding: 30px 20px;
+    }
+    
+    .submit-btn {
+        width: 100%;
+        padding: 18px 20px;
+    }
+}
 /* =========================================== */
 /* RESPONSIVE MEDIA QUERIES                 */
 /* =========================================== */
