@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - Mars Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-logo">
+            MARS<span>EXPLORER</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html#hero">Home</a>
+            <a href="index.html#details">About</a>
+            <a href="leaderboard.html">Leaderboard</a>
+            <a href="contactus.html">Contact Us</a>
+            <button id="login-trigger" class="btn-login-nav">Login</button>
+        </div>
+    </nav>
+
+    <div class="leaderboard-container">
+        <h1 class="leaderboard-title">MARS EXPLORER LEADERBOARD</h1>
+        <p class="leaderboard-subtitle">Top explorers ranked by their mineral collection scores</p>
+        
+        <!-- Rock Type Selection Tabs -->
+        <div class="rock-tabs">
+            <button class="rock-tab active" data-rock="totalScore">
+                <span class="rock-icon">🏆</span>
+                Total Score
+            </button>
+            <button class="rock-tab" data-rock="basalt">
+                <span class="rock-icon">🪨</span>
+                Basalt
+            </button>
+            <button class="rock-tab" data-rock="water">
+                <span class="rock-icon">💧</span>
+                Water
+            </button>
+            <button class="rock-tab" data-rock="regolith">
+                <span class="rock-icon">🌑</span>
+                Regolith
+            </button>
+            <button class="rock-tab" data-rock="smeciteClay">
+                <span class="rock-icon">🏺</span>
+                Smecite Clay
+            </button>
+            <button class="rock-tab" data-rock="gypsum">
+                <span class="rock-icon">⚪</span>
+                Gypsum
+            </button>
+            <button class="rock-tab" data-rock="carbonateRock">
+                <span class="rock-icon">🔶</span>
+                Carbonate Rock
+            </button>
+        </div>
+
+        <!-- Current Selection Display -->
+        <div class="current-rock">
+            <h3 id="current-rock-name">TOTAL SCORE LEADERBOARD</h3>
+        </div>
+        
+        <div class="stats-overview">
+            <div class="stat-card">
+                <h3>Top Score</h3>
+                <p id="top-score">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Avg Score</h3>
+                <p id="avg-score">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Explorers</h3>
+                <p id="total-explorers">0</p>
+            </div>
+        </div>
+        
+        <div id="loading">
+            <div class="loading-spinner"></div>
+            <p>Connecting to Mars Orbital Database...</p>
+        </div>
+        
+        <div id="leaderboard-content" style="display: none;">
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Explorer</th>
+                        <th id="score-header">Score</th>
+                        <th>Samples</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                    <!-- Leaderboard rows will be inserted here -->
+                </tbody>
+            </table>
+            
+            <div class="leaderboard-footer">
+                <button id="refresh-btn" class="refresh-btn">
+                    <span class="refresh-icon">⟳</span> Refresh Leaderboard
+                </button>
+                <p class="last-updated">Last updated: <span id="last-updated-time">--:--</span></p>
+            </div>
+        </div>
+        
+        <div id="no-data" style="display: none;">
+            <div class="no-data-message">
+                <h3>No Explorer Data Found</h3>
+                <p>Be the first to explore Mars and claim your spot on the leaderboard!</p>
+                <a href="index.html" class="btn btn-primary">Start Exploring</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Firebase -->
+    <script type="module" src="firebase-init.js"></script>
+    <script type="module" src="firebase-leaderboard.js"></script>
+</body>
+</html>
