@@ -292,6 +292,21 @@ h1, h2, h3 {
     border-radius: 8px;
     background: rgba(0, 0, 0, 0.2);
     border-left: 3px solid #ef8d6e;
+
+    opacity: 0;
+    height: 0;
+    padding: 0 15px;
+    margin: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+#auth-message:not(:empty) {
+    opacity: 1;
+    height: auto;
+    min-height: 24px;
+    padding: 8px 15px;
+    margin: 15px 0 25px 0;
 }
 
 .input-group {
