@@ -1,5 +1,6 @@
 import { firebaseConfig } from './firebase-config.js';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+// Import Firebase Auth functions
 import { 
     getAuth, 
     signInWithEmailAndPassword, 
@@ -7,12 +8,13 @@ import {
     onAuthStateChanged, 
     signOut 
 } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+// Import Firebase Database functions
 import { 
     getDatabase, 
     ref, 
     set 
 } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-database.js";
-// ADD THESE STORAGE IMPORTS
+// Import Firebase Storage functions
 import { 
     getStorage,
     ref as storageRef,
@@ -48,6 +50,57 @@ const getFriendlyErrorMessage = (errorCode) => {
     }
 };
 
+// Function to create initial achievements structure - EXACT same as Unity
+const createInitialAchievements = () => {
+    return {
+        firstDrill: {
+            unlocked: false,
+            unlockDate: "",
+            score: 0
+        },
+        perfectDrill: {
+            unlocked: false,
+            unlockDate: "",
+            score: 0
+        },
+        regolithMaster: {
+            unlocked: false,
+            unlockDate: "",
+            score: 0
+        },
+        basaltMaster: {
+            unlocked: false,
+            unlockDate: "",
+            score: 0
+        },
+        gypsumMaster: {
+            unlocked: false,
+            unlockDate: "",
+            score: 0
+        },
+        clayMaster: {
+            unlocked: false,
+            unlockDate: "",
+            score: 0
+        },
+        carbonateMaster: {
+            unlocked: false,
+            unlockDate: "",
+            score: 0
+        },
+        waterMaster: {
+            unlocked: false,
+            unlockDate: "",
+            score: 0
+        },
+        allRocksMastered: {
+            unlocked: false,
+            unlockDate: "",
+            score: 0
+        }
+    };
+};
+
 // Function to create user profile in database - EXACT Unity structure
 const createUserProfile = async (userId, email) => {
     try {
@@ -59,24 +112,40 @@ const createUserProfile = async (userId, email) => {
                 email: email,
                 accountCreated: new Date().toISOString(), // Same as DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
                 lastLogin: new Date().toISOString()
-                // Note: No username field in Unity version
             },
             inventory: {
-                tools: {
-                    Repair_tool: false,
-                    Wiper_tool: false,
-                    Extractor: false
-                },
+                tools: ["repairTool", "wiperTool", "extractor"], // Unity uses list, not dictionary
                 samples: {
-                    Water: 0,
-                    Regolith: 0,
-                    Smecite_Clay: 0, // Note: Typo from your Unity file - "Smecite" not "Smectite"
-                    Gypsum: 0,
-                    Carbonate_Rock: 0,
-                    Basalt: 0
+                    water: {
+                        amount: 0,
+                        highScore: 0
+                    },
+                    regolith: {
+                        amount: 0,
+                        highScore: 0
+                    },
+                    smeciteClay: {
+                        amount: 0,
+                        highScore: 0
+                    },
+                    gypsum: {
+                        amount: 0,
+                        highScore: 0
+                    },
+                    carbonateRock: {
+                        amount: 0,
+                        highScore: 0
+                    },
+                    basalt: {
+                        amount: 0,
+                        highScore: 0
+                    }
                 }
-            }
-            // Note: No "stats" object in your Unity version
+            },
+            scores: {
+                totalScore: 0
+            },
+            achievements: createInitialAchievements() // Add achievements section
         };
         
         await set(userRef, userData);
