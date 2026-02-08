@@ -12,11 +12,21 @@ import {
     ref, 
     set 
 } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-database.js";
+// ADD THESE STORAGE IMPORTS
+import { 
+    getStorage,
+    ref as storageRef,
+    uploadBytes,
+    getDownloadURL,
+    deleteObject 
+} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-storage.js";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
+// Initialize Storage
+const storage = getStorage(app);
 
 // Helper function to translate technical errors into human-friendly ones
 const getFriendlyErrorMessage = (errorCode) => {
@@ -122,4 +132,108 @@ export const signupUser = async (email, password) => {
 export const logoutUser = () => signOut(auth);
 export const watchAuthState = (callback) => onAuthStateChanged(auth, callback);
 
-export { auth, db };
+// Upload profile picture to Firebase Storage
+export const uploadProfilePicture = async (userId, file, userDisplayName = null) => {
+    try {
+        // Validate file
+        if (!file.type.match('image.*')) {
+            return { success: false, message: "Please select an image file (JPG, PNG, GIF)" };
+        }
+        
+        if (file.size > 5 * 1024 * 1024) { // 5MB limit
+            return { success: false, message: "Image size should be less than 5MB" };
+        }
+        
+        // Create filename with user's display name or email
+        let userName = userDisplayName || `user_${userId.substring(0, 8)}`; // Fallback to partial UID
+        // Clean the name for filename use
+        userName = userName
+            .toLowerCase()
+            .replace(/[^a-z0-9]/g, '_') // Replace non-alphanumeric with underscore
+            .substring(0, 20); // Limit length
+        
+        const timestamp = Date.now();
+        const fileExtension = file.name.split('.').pop() || 'jpg';
+        const fileName = `${userName}_${timestamp}.${fileExtension}`;
+        const storagePath = `profile-pictures/${userId}/${fileName}`;
+        
+        // Create storage reference
+        const imageRef = storageRef(storage, storagePath);
+        
+        // Upload file
+        await uploadBytes(imageRef, file);
+        
+        // Get download URL
+        const downloadURL = await getDownloadURL(imageRef);
+        
+        // Save URL to user's database profile
+        const userRef = ref(db, `users/${userId}/profile/photoURL`);
+        await set(userRef, downloadURL);
+        
+        return { 
+            success: true, 
+            url: downloadURL,
+            message: "Profile picture uploaded successfully!" 
+        };
+    } catch (error) {
+        console.error("Error uploading profile picture:", error);
+        return { 
+            success: false, 
+            message: error.code === 'storage/unauthorized' 
+                ? "You don't have permission to upload images." 
+                : "Failed to upload image. Please try again." 
+        };
+    }
+};
+
+// Delete profile picture from Firebase Storage
+export const deleteProfilePicture = async (userId, currentPhotoURL = null) => {
+    try {
+        // If we have a current photo URL, try to delete it from storage
+        if (currentPhotoURL) {
+            try {
+                // Extract the path from the URL
+                const urlPath = currentPhotoURL.split('/o/')[1]?.split('?')[0];
+                if (urlPath) {
+                    const decodedPath = decodeURIComponent(urlPath);
+                    const oldImageRef = storageRef(storage, decodedPath);
+                    await deleteObject(oldImageRef);
+                }
+            } catch (storageError) {
+                console.warn("Could not delete old image from storage:", storageError);
+                // Continue anyway - we'll still remove the database reference
+            }
+        }
+        
+        // Remove URL from user's database profile
+        const userRef = ref(db, `users/${userId}/profile/photoURL`);
+        await set(userRef, null);
+        
+        return { 
+            success: true, 
+            message: "Profile picture removed successfully!" 
+        };
+    } catch (error) {
+        console.error("Error deleting profile picture:", error);
+        return { 
+            success: false, 
+            message: "Failed to remove profile picture. Please try again." 
+        };
+    }
+};
+
+// Get user's profile picture URL
+export const getProfilePictureURL = async (userId) => {
+    try {
+        const userRef = ref(db, `users/${userId}/profile/photoURL`);
+        // Note: You would need to use onValue or get to retrieve this
+        // This is a helper function that would be used with other Firebase methods
+        return null; // Placeholder - actual implementation depends on your data fetching
+    } catch (error) {
+        console.error("Error getting profile picture URL:", error);
+        return null;
+    }
+};
+
+// Export storage instance
+export { auth, db, storage };

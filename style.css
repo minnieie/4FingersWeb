@@ -1722,6 +1722,436 @@ footer p {
         padding: 18px 20px;
     }
 }
+
+/* =========================================== */
+/* PROFILE PICTURE STYLES                     */
+/* =========================================== */
+
+.profile-picture-section {
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.profile-picture-wrapper {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.profile-picture-frame {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 25px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid rgba(239, 141, 110, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.profile-picture-frame:hover {
+    border-color: rgba(239, 141, 110, 0.6);
+    transform: scale(1.02);
+}
+
+.profile-picture {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.default-profile {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #ef8d6e, #d1633e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 70px;
+    color: white;
+}
+
+.profile-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(3px);
+}
+
+.profile-picture-frame:hover .profile-overlay {
+    opacity: 1;
+}
+
+.upload-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.upload-btn, .remove-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    color: #333;
+    min-width: 150px;
+    justify-content: center;
+}
+
+.upload-btn:hover {
+    background: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.remove-btn {
+    background: rgba(255, 107, 107, 0.9);
+    color: white;
+}
+
+.remove-btn:hover {
+    background: rgba(255, 107, 107, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+}
+
+.camera-options {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.camera-btn {
+    background: rgba(239, 141, 110, 0.2);
+    border: 1px solid rgba(239, 141, 110, 0.4);
+    color: #ef8d6e;
+    padding: 12px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.camera-btn:hover {
+    background: rgba(239, 141, 110, 0.3);
+    border-color: rgba(239, 141, 110, 0.8);
+    transform: translateY(-2px);
+}
+
+.upload-progress {
+    margin-top: 20px;
+    display: none;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ef8d6e, #d1633e);
+    width: 30%;
+    border-radius: 3px;
+}
+
+@keyframes progressAnimation {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(400%); }
+}
+
+.upload-progress p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.upload-message {
+    margin-top: 15px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    display: none;
+    font-weight: 600;
+}
+
+.upload-message.success {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+    border: 1px solid rgba(76, 175, 80, 0.4);
+}
+
+.upload-message.error {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.4);
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .profile-picture-frame {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .default-profile {
+        font-size: 60px;
+    }
+    
+    .camera-options {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .camera-btn {
+        justify-content: center;
+    }
+}
+
+/* =========================================== */
+/* CAMERA MODAL STYLES                       */
+/* =========================================== */
+
+.camera-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+    backdrop-filter: blur(10px);
+}
+
+.camera-modal {
+    background: rgba(20, 15, 10, 0.95);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    border: 2px solid rgba(239, 141, 110, 0.4);
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.camera-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(239, 141, 110, 0.2);
+}
+
+.camera-header h3 {
+    margin: 0;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.close-camera {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 30px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.close-camera:hover {
+    color: #ef8d6e;
+    transform: scale(1.2);
+}
+
+.camera-preview {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+#camera-feed {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1); /* Mirror for front camera */
+    display: block;
+}
+
+.photo-preview {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #000;
+}
+
+#photo-canvas {
+    display: none;
+}
+
+.camera-controls {
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.camera-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 20px;
+}
+
+.camera-control-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.camera-control-btn:hover {
+    background: rgba(239, 141, 110, 0.2);
+    border-color: rgba(239, 141, 110, 0.5);
+}
+
+.capture-btn {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    border: 4px solid rgba(239, 141, 110, 0.5);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.capture-btn:hover {
+    background: white;
+    border-color: rgba(239, 141, 110, 0.8);
+    transform: scale(1.1);
+}
+
+.capture-btn i {
+    font-size: 28px;
+    color: #333;
+}
+
+.camera-action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.camera-action-buttons .btn-secondary {
+    background: linear-gradient(135deg, #ef8d6e, #d1633e);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.camera-action-buttons .btn-secondary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(239, 141, 110, 0.3);
+}
+
+.camera-instructions {
+    padding: 15px 20px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.camera-instructions p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* For mobile responsiveness */
+@media (max-width: 600px) {
+    .camera-modal {
+        width: 95%;
+        margin: 10px;
+    }
+    
+    .camera-preview {
+        height: 350px;
+    }
+    
+    .camera-control-btn {
+        padding: 10px 15px;
+        font-size: 0.8rem;
+    }
+    
+    .capture-btn {
+        width: 60px;
+        height: 60px;
+    }
+}
+
 /* =========================================== */
 /* RESPONSIVE MEDIA QUERIES                 */
 /* =========================================== */
