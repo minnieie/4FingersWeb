@@ -295,9 +295,9 @@ export const deleteProfilePicture = async (userId, currentPhotoURL = null) => {
 export const getProfilePictureURL = async (userId) => {
     try {
         const userRef = ref(db, `users/${userId}/profile/photoURL`);
-        // Note: You would need to use onValue or get to retrieve this
-        // This is a helper function that would be used with other Firebase methods
-        return null; // Placeholder - actual implementation depends on your data fetching
+        // Fetch the URL from the database
+        const snapshot = await get(userRef);
+        return snapshot.val(); // Return the URL value or null if not found
     } catch (error) {
         console.error("Error getting profile picture URL:", error);
         return null;

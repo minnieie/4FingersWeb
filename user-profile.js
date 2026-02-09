@@ -14,8 +14,6 @@ const sampleImages = {
     'repairTool': 'images/default-tool.png',
     'wiperTool': 'images/default-tool.png',
     'extractor': 'images/extractor.png',
-    'Sample Container': 'images/default-tool.png',
-    'Laser Spectrometer': 'images/default-tool.png',
 };
 
 // Helper function to format names nicely
@@ -25,6 +23,75 @@ function formatName(name) {
         .replace(/_/g, ' ')
         .replace(/^./, str => str.toUpperCase())
         .trim();
+}
+
+// Add achievement images mapping 
+const achievementImages = {
+    'firstDrill': 'images/achievements/firstdrillbadge.png',
+    'perfectDrill': 'images/achievements/perfectdrillbadge.png',
+    'basaltMaster': 'images/achievements/rock1.png',
+    'carbonateMaster': 'images/achievements/rock2.png',
+    'clayMaster': 'images/achievements/rock3.png',
+    'gypsumMaster': 'images/achievements/rock4.png',
+    'waterMaster': 'images/achievements/rock5.png',
+    'regolithMaster': 'images/achievements/rock6.png',
+    'allRocksMastered': 'images/achievements/allrocksbadge.png',
+};
+
+// Add achievement titles and descriptions 
+const achievementInfo = {
+    'firstDrill': {
+        title: 'First Drill',
+        description: 'Complete your first drilling operation'
+    },
+    'perfectDrill': {
+        title: 'Perfect Drill',
+        description: 'Achieve 100% on any drill'
+    },
+    'regolithMaster': {
+        title: 'Regolith Master',
+        description: 'Reach level 3 info for Regolith'
+    },
+    'basaltMaster': {
+        title: 'Basalt Master',
+        description: 'Reach level 3 info for Basalt'
+    },
+    'gypsumMaster': {
+        title: 'Gypsum Master',
+        description: 'Reach level 3 info for Gypsum'
+    },
+    'clayMaster': {
+        title: 'Clay Master',
+        description: 'Reach level 3 info for Smectite Clay'
+    },
+    'carbonateMaster': {
+        title: 'Carbonate Master',
+        description: 'Reach level 3 info for Carbonate Rock'
+    },
+    'waterMaster': {
+        title: 'Water Master',
+        description: 'Reach level 3 info for Water'
+    },
+    'allRocksMastered': {
+        title: 'Mars Geologist',
+        description: 'Master all rock types (level 3 info for all)'
+    }
+};
+
+// Add this helper function to format dates
+function formatDate(dateString) {
+    if (!dateString) return '';
+    
+    try {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+    } catch (error) {
+        return '';
+    }
 }
 
 // Watch for authentication state changes
@@ -95,6 +162,7 @@ function displayData(data) {
     displayTools(data);
     displaySamples(data);
     displayScores(data);
+    displayAchievements(data);
 }
 
 // Display tools from inventory
@@ -226,6 +294,118 @@ function displayScores(data) {
             <div class="no-data" style="grid-column: 1 / -1;">
                 <p>No scores recorded yet</p>
                 <p style="font-size: 0.9rem; color: rgba(255,255,255,0.5);">Complete missions to earn scores!</p>
+            </div>
+        `;
+    }
+}
+
+// Display achievements with locked/unlocked states
+function displayAchievements(data) {
+    const achievements = data.achievements || {};
+    const achievementsGrid = document.getElementById('achievements-grid');
+    
+    if (!achievementsGrid) {
+        console.warn('Achievements grid element not found in the HTML');
+        return;
+    }
+    
+    achievementsGrid.innerHTML = '';
+    
+    // List of all possible achievements
+    const allAchievements = [
+        'firstDrill',
+        'perfectDrill',
+        'regolithMaster',
+        'basaltMaster',
+        'gypsumMaster',
+        'clayMaster',
+        'carbonateMaster',
+        'waterMaster',
+        'allRocksMastered'
+    ];
+    
+    // Check if user has any achievements data
+    if (Object.keys(achievements).length > 0 || allAchievements.length > 0) {
+        allAchievements.forEach(achievementKey => {
+            const achievementCard = document.createElement('div');
+            achievementCard.className = 'achievement-card';
+            
+            // Check if achievement is unlocked
+            let isUnlocked = false;
+            let unlockDate = null;
+            let score = 0;
+            
+            if (achievements[achievementKey] !== undefined) {
+                const achievementData = achievements[achievementKey];
+                
+                // Check the format - could be boolean or object
+                if (typeof achievementData === 'boolean') {
+                    isUnlocked = achievementData;
+                } else if (typeof achievementData === 'object') {
+                    // Object format from DatabaseManager.cs
+                    isUnlocked = achievementData.unlocked === true;
+                    unlockDate = achievementData.unlockDate || null;
+                    score = achievementData.score || 0;
+                } else if (typeof achievementData === 'number') {
+                    isUnlocked = achievementData === 1;
+                } else if (typeof achievementData === 'string') {
+                    // If it's just a date string, treat it as unlocked
+                    isUnlocked = true;
+                    unlockDate = achievementData;
+                }
+            }
+            
+            // Get achievement info - always get the description even when locked
+            const info = achievementInfo[achievementKey] || { 
+                title: formatName(achievementKey), 
+                description: 'Complete the challenge to unlock this achievement' 
+            };
+            
+            // Get image - use default if not found
+            const imageSrc = achievementImages[achievementKey] || 'images/default-achievement.png';
+            
+            // Format the unlock date
+            let formattedDate = 'Not yet unlocked';
+            if (isUnlocked && unlockDate) {
+                try {
+                    formattedDate = formatDate(unlockDate);
+                    if (formattedDate === '') {
+                        formattedDate = 'Unknown date';
+                    }
+                } catch (error) {
+                    console.warn(`Could not parse date for ${achievementKey}:`, unlockDate);
+                    formattedDate = 'Unknown date';
+                }
+            } else if (isUnlocked) {
+                formattedDate = 'Unknown date'; // Unlocked but no date recorded
+            }
+            
+            // Add locked class if not unlocked
+            if (!isUnlocked) {
+                achievementCard.classList.add('locked');
+            }
+            
+            achievementCard.innerHTML = `
+                <div class="achievement-header">
+                    <img src="${imageSrc}" alt="${info.title}" class="achievement-icon">
+                    <div class="achievement-title-container">
+                        <h4 class="achievement-title">${isUnlocked ? info.title : 'Locked'}</h4>
+                        ${isUnlocked ? `<p class="achievement-date">Unlocked: ${formattedDate}</p>` : ''}
+                    </div>
+                </div>
+                <div class="achievement-body">
+                    <p class="achievement-desc">${info.description}</p> <!-- Always show the description -->
+                    ${isUnlocked && score > 0 ? `<p class="achievement-score">Score: ${score.toFixed(1)}</p>` : ''}
+                </div>
+            `;
+            
+            achievementsGrid.appendChild(achievementCard);
+        });
+    } else {
+        achievementsGrid.innerHTML = `
+            <div class="no-data" style="grid-column: 1 / -1;">
+                <p>No achievements yet</p>
+                <p style="font-size: 0.9rem; color: rgba(255,255,255,0.5);">Complete challenges to earn achievements!</p>
             </div>
         `;
     }
