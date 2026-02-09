@@ -5,15 +5,20 @@ import { ref, get, set } from "https://www.gstatic.com/firebasejs/12.8.0/firebas
 let currentUser = null;
 let currentPhotoURL = null;
 let cameraStream = null; // For direct webcam access
+let listenersInitialized = false;
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Check auth state
     auth.onAuthStateChanged((user) => {
+        if (!user) return;
+
         currentUser = user;
-        if (user) {
-            loadProfilePicture(user.uid);
+        loadProfilePicture(user.uid);
+
+        // Prevent duplicate listeners
+        if (!listenersInitialized) {
             setupEventListeners();
+            listenersInitialized = true;
         }
     });
 });
@@ -69,19 +74,14 @@ function displayDefaultProfile() {
 
 // Setup event listeners
 function setupEventListeners() {
-    // Upload from file input
+    // Upload from file input - ONLY USE ONE FILE INPUT
     const fileInput = document.getElementById('profile-picture-input');
-    const fileUploadInput = document.getElementById('file-upload-input');
     const removeBtn = document.getElementById('remove-picture-btn');
     const takePhotoBtn = document.getElementById('take-photo-btn');
     const uploadFileLabel = document.getElementById('upload-file-label');
     
     if (fileInput) {
         fileInput.addEventListener('change', (e) => handleFileSelect(e, 'file-input'));
-    }
-    
-    if (fileUploadInput) {
-        fileUploadInput.addEventListener('change', (e) => handleFileSelect(e, 'file-upload'));
     }
     
     if (removeBtn) {
@@ -93,8 +93,9 @@ function setupEventListeners() {
     }
     
     if (uploadFileLabel) {
+        // When "Upload File" button is clicked, trigger the main file input
         uploadFileLabel.addEventListener('click', () => {
-            fileUploadInput.click();
+            fileInput.click();
         });
     }
     
@@ -111,10 +112,8 @@ function setupEventListeners() {
 async function handleFileSelect(event, source) {
     const file = event.target.files[0];
     
+    // No file selected
     if (!file) return;
-    
-    // Reset file input
-    event.target.value = '';
     
     // Validate file
     if (!file.type.match('image.*')) {
@@ -171,6 +170,8 @@ async function handleFileSelect(event, source) {
         showMessage("Failed to upload image. Please try again.", 'error');
     } finally {
         showProgress(false);
+        // Clear the file input so the same file can be selected again
+        event.target.value = '';
     }
 }
 
@@ -415,7 +416,6 @@ async function restartCamera(videoElement) {
         throw error;
     }
 }
-
 
 // Close camera modal
 function closeCameraModal(modal) {
