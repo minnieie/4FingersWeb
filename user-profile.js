@@ -11,8 +11,8 @@ const sampleImages = {
     'water': 'images/water.png',
     
     // Tool images
-    'repairTool': 'images/default-tool.png',
-    'wiperTool': 'images/default-tool.png',
+    'repairTool': 'images/repairTool.png',
+    'wiperTool': 'images/wiperTool.png',
     'extractor': 'images/extractor.png',
 };
 

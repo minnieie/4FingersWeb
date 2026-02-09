@@ -2274,3 +2274,114 @@ footer p {
         box-sizing: border-box;
     }
 }
+
+/* Mobile Navigation Styles */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    width: 32px;
+    height: 28px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+    position: relative;
+}
+
+.hamburger-line {
+    width: 100%;
+    height: 3px;
+    background-color: #fff;
+    border-radius: 999px;
+    transition:
+        transform 0.35s ease,
+        opacity 0.25s ease;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: 260px;
+        background: rgba(18, 18, 28, 0.92);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 90px 28px 30px;
+        transform: translateX(100%);
+        transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1000;
+        box-shadow: -10px 0 35px rgba(0, 0, 0, 0.55);
+    }
+
+    .nav-links.active {
+        transform: translateX(0);
+    }
+
+    .nav-links .nav-link,
+    .nav-links .btn-login-nav {
+        width: 100%;
+        padding: 14px 0;
+        font-size: 1.05rem;
+        letter-spacing: 0.3px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .nav-links .nav-link:hover {
+        color: #9bb7ff;
+        transform: translateX(4px);
+    }
+
+    .nav-links .btn-login-nav {
+        margin-top: 24px;
+        text-align: center;
+        border-radius: 10px;
+        padding: 12px;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        border: none;
+        font-weight: 600;
+        box-shadow: 0 8px 20px rgba(106, 17, 203, 0.35);
+    }
+
+    /* Hamburger Animation */
+    .hamburger.active .hamburger-line:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+
+    .hamburger.active .hamburger-line:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active .hamburger-line:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+
+    /* Overlay */
+    .nav-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(2px);
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .nav-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+}

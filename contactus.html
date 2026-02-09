@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Mars Explorer</title>
+    <title>Contact Us</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
@@ -12,12 +12,22 @@
 <body class="contact-page">
 
     <nav class="navbar">
-        <div class="nav-logo">MARS<span>EXPLORER</span></div>
-        <div class="nav-links">
-            <a href="index.html#hero">Home</a>
-            <a href="index.html#details">About</a>
-            <a href="leaderboard.html">Leaderboard</a>
-            <a href="contactus.html" class="active">Contact Us</a>
+        <div class="nav-logo">ROCKS &<span>DEEPSPACE</span></div>
+        
+        <!-- Hamburger Menu Button -->
+        <button class="hamburger" id="hamburger">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+        
+        <!-- Navigation Links -->
+        <div class="nav-links" id="nav-links">
+            <a href="index.html#hero" class="nav-link">Home</a>
+            <a href="index.html#details" class="nav-link">About</a>
+            <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+            <a href="contactus.html" class="nav-link">Contact Us</a>
+            <a href="user.html" class="nav-link" id="profile-link" style="display: none;">Profile</a>
             <button id="login-trigger" class="btn-login-nav">Login</button>
         </div>
     </nav>
@@ -64,7 +74,7 @@
 
     <div class="container contact-container">
         <p class="intro-text">
-            Mars Explorer is a Year 2.2 integrated project by 4Fingers that integrates Unity XR development, Firebase backend systems, 3D environment creation, and UX design. It is an educational Mars simulation designed to help students learn about rocks found on Mars, discover new scientific information, and explore Mars’s potential habitability.
+            Rocks & Deepspace is a Year 2.2 integrated project by 4Fingers that integrates Unity XR development, Firebase backend systems, 3D environment creation, and UX design. It is an educational Mars simulation designed to help students learn about rocks found on Mars, discover new scientific information, and explore Mars’s potential habitability.
         </p>
 
         <h2 class="section-title">Current Team:</h2>
@@ -92,9 +102,10 @@
         </div>
 
     <footer>
-        <p>© 2026 4Fingers Mars Explorer Project | Educational Research Only</p>
+        <p>© 2026 4Fingers Rocks & Deepspace Project | Educational Research Only</p>
     </footer>
 
     <script type="module" src="firebase-init.js"></script>
+    <script src="nav.js"></script>
 </body>
 </html>
