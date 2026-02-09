@@ -506,7 +506,7 @@ body:has(#profile-container) {
 }
 
 .tool-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(220, 158, 134, 0.35);
     border: 1px solid rgba(239, 141, 110, 0.3);
     border-radius: 15px;
     padding: 25px 20px;
