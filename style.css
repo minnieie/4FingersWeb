@@ -159,7 +159,7 @@ h1, h2, h3 {
 }
 
 .hero-content .title {
-    font-size: 7rem;
+    font-size: 7em;
     font-weight: 400;
     margin: 0;
     line-height: 0.9;
@@ -2116,7 +2116,7 @@ footer p {
 /* Extra Large Screens (1400px and above) */
 @media (min-width: 1400px) {
     #hero .title {
-        font-size: 9rem;
+        font-size: 7rem;
     }
     
     .details-title {
@@ -2242,7 +2242,7 @@ footer p {
     }
     
     .nav-logo {
-        font-size: 1rem;
+        font-size: 1.2rem;
         letter-spacing: 2px;
     }
     
@@ -2325,11 +2325,11 @@ footer p {
     }
     
     .nav-logo {
-        font-size: 0.9rem;
+        font-size: 2rem;
     }
     
     #hero .title {
-        font-size: 3.5rem;
+        font-size: 8rem;
     }
     
     .details-title {
@@ -2352,12 +2352,12 @@ footer p {
     }
     
     .nav-logo {
-        font-size: 0.8rem;
+        font-size: 1.5rem;
         letter-spacing: 1px;
     }
     
     #hero .title {
-        font-size: 2.8rem;
+        font-size: 5rem;
     }
     
     .subtitle {
@@ -2414,7 +2414,7 @@ footer p {
 }
 
 /* =========================================== */
-/* LEADERBOARD PAGE - RESPONSIVE MEDIA QUERIES */
+/* LEADERBOARD PAGE                            */
 /* =========================================== */
 
 /* Large Desktop (1200px and above) */
@@ -3127,7 +3127,7 @@ footer p {
 }
 
 /* =========================================== */
-/* MOBILE NAVIGATION - PUT THIS AT THE VERY END */
+/* MOBILE NAVIGATION                           */
 /* =========================================== */
 
 /* Base hamburger styles */
