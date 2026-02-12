@@ -1,13 +1,35 @@
-// nav.js - Navigation functionality
+/**
+ * Navigation Module
+ * Handles hamburger menu toggle, mobile navigation, and basic modal interactions
+ * This file provides fallback navigation functionality alongside firebase-init.js
+ */
+
+// Initialize navigation when DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Get DOM elements
+    // ============================================
+    // DOM Element References
+    // ============================================
+    
+    // Hamburger menu button
     const hamburger = document.getElementById('hamburger');
+    
+    // Navigation links container
     const navLinks = document.getElementById('nav-links');
+    
+    // Login button in navigation bar
     const loginTrigger = document.getElementById('login-trigger');
+    
+    // Authentication modal overlay
     const authModal = document.getElementById('auth-modal');
+    
+    // Close button for modal
     const closeModal = document.querySelector('.close-modal');
     
-    // Hamburger menu toggle
+    // ============================================
+    // Hamburger Menu Toggle
+    // ============================================
+    
+    // Toggle mobile menu visibility and hamburger animation when burger icon is clicked
     if (hamburger) {
         hamburger.addEventListener('click', function() {
             navLinks.classList.toggle('active');
@@ -15,7 +37,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Close mobile menu when clicking on a link
+    // ============================================
+    // Mobile Menu - Close on Link Click
+    // ============================================
+    
+    // Close mobile menu when user clicks on any navigation link
     const navLinkElements = document.querySelectorAll('.nav-link');
     navLinkElements.forEach(link => {
         link.addEventListener('click', function() {
@@ -24,7 +50,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Login modal functionality
+    // ============================================
+    // Modal Management
+    // ============================================
+    
+    // Open authentication modal when login button is clicked
+    // Prevents page scrolling while modal is open
     if (loginTrigger) {
         loginTrigger.addEventListener('click', function() {
             if (authModal) {
@@ -34,7 +65,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Close modal
+    // Close authentication modal when X button is clicked
+    // Re-enable page scrolling when modal closes
     if (closeModal) {
         closeModal.addEventListener('click', function() {
             authModal.style.display = 'none';
@@ -42,7 +74,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Close modal when clicking outside
+    // Close authentication modal when clicking on the backdrop (outside modal content)
+    // Re-enable page scrolling when modal closes
     if (authModal) {
         authModal.addEventListener('click', function(e) {
             if (e.target === authModal) {
@@ -52,13 +85,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Switch between login and signup forms
+    // ============================================
+    // Form Toggle - Login/Signup
+    // ============================================
+    
+    // DOM elements for form switching
     const switchToSignup = document.getElementById('switch-to-signup');
     const switchToLogin = document.getElementById('switch-to-login');
     const loginForm = document.getElementById('login-form');
     const signupForm = document.getElementById('signup-form');
     const modalTitle = document.getElementById('modal-title');
     
+    // Switch to signup form when user clicks "Create Account" button
     if (switchToSignup) {
         switchToSignup.addEventListener('click', function() {
             loginForm.style.display = 'none';
@@ -67,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Switch to login form when user clicks "Back to Login" button
     if (switchToLogin) {
         switchToLogin.addEventListener('click', function() {
             signupForm.style.display = 'none';

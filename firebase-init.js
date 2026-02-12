@@ -1,34 +1,52 @@
+/**
+ * Firebase Authentication UI Initialization
+ * Handles modal interactions, form validation, and authentication state management
+ * Works on all pages (index.html, leaderboard.html, user.html, contactus.html)
+ */
+
+// Import authentication functions from firebase-auth module
 import { auth, loginUser, signupUser, logoutUser, watchAuthState } from './firebase-auth.js';
 
-// Get modal elements
+// ============================================
+// DOM Element References
+// ============================================
+
+// Modal and trigger elements
 const authModal = document.getElementById('auth-modal');
 const closeModal = document.querySelector('.close-modal');
 const loginTrigger = document.getElementById('login-trigger');
 
-// Form containers
+// Form containers for login and signup
 const loginForm = document.getElementById('login-form');
 const signupForm = document.getElementById('signup-form');
 
-// Login elements
+// Login form input elements
 const loginEmail = document.getElementById('login-email');
 const loginPass = document.getElementById('login-pass');
 const btnLogin = document.getElementById('btn-login');
 
-// Signup elements
+// Signup form input elements
 const signupEmail = document.getElementById('signup-email');
 const signupPass = document.getElementById('signup-pass');
 const signupConfirmPass = document.getElementById('signup-confirm-pass');
 const btnSignup = document.getElementById('btn-signup');
 
-// Toggle buttons
+// Form toggle buttons
 const switchToSignup = document.getElementById('switch-to-signup');
 const switchToLogin = document.getElementById('switch-to-login');
 
-// Message display
+// Message and title display elements
 const authMessage = document.getElementById('auth-message');
 const modalTitle = document.getElementById('modal-title');
 
-// Modal functions
+// ============================================
+// Modal Management Functions
+// ============================================
+
+/**
+ * Opens the authentication modal with animation
+ * Resets forms and clears previous messages
+ */
 function showModal() {
     authModal.style.display = 'flex';
     gsap.fromTo(".modal-content", 
@@ -39,10 +57,16 @@ function showModal() {
     authMessage.textContent = '';
 }
 
+/**
+ * Closes the authentication modal
+ */
 function hideModal() {
     authModal.style.display = 'none';
 }
 
+/**
+ * Clears all form input values
+ */
 function resetForms() {
     loginEmail.value = '';
     loginPass.value = '';
@@ -51,6 +75,9 @@ function resetForms() {
     signupConfirmPass.value = '';
 }
 
+/**
+ * Displays the login form and hides the signup form
+ */
 function showLoginForm() {
     loginForm.style.display = 'block';
     signupForm.style.display = 'none';
@@ -58,6 +85,9 @@ function showLoginForm() {
     authMessage.textContent = '';
 }
 
+/**
+ * Displays the signup form and hides the login form
+ */
 function showSignupForm() {
     loginForm.style.display = 'none';
     signupForm.style.display = 'block';
@@ -65,15 +95,21 @@ function showSignupForm() {
     authMessage.textContent = '';
 }
 
+// ============================================
 // Event Listeners
+// ============================================
+
+// Login button click handler - opens modal with login form
 loginTrigger.addEventListener('click', (e) => {
     e.preventDefault();
     showModal();
     showLoginForm();
 });
 
+// Close button click handler
 closeModal.addEventListener('click', hideModal);
 
+// Form toggle buttons
 switchToSignup.addEventListener('click', () => {
     showSignupForm();
 });
@@ -82,7 +118,14 @@ switchToLogin.addEventListener('click', () => {
     showLoginForm();
 });
 
-// Handle Login
+// ============================================
+// Authentication Handlers
+// ============================================
+
+/**
+ * Handles login form submission
+ * Validates input, calls loginUser function, and redirects on success
+ */
 btnLogin.addEventListener('click', async () => {
     const email = loginEmail.value.trim();
     const password = loginPass.value;
@@ -111,7 +154,10 @@ btnLogin.addEventListener('click', async () => {
     }
 });
 
-// Handle Signup with password confirmation
+/**
+ * Handles signup form submission
+ * Validates input including password confirmation, creates account, and auto-logs in user
+ */
 btnSignup.addEventListener('click', async () => {
     const email = signupEmail.value.trim();
     const password = signupPass.value;
@@ -161,7 +207,15 @@ btnSignup.addEventListener('click', async () => {
     }
 });
 
-// Update UI based on Auth State
+// ============================================
+// Auth State Management
+// ============================================
+
+/**
+ * Watches for authentication state changes
+ * Updates UI to show either logged-in or logged-out state
+ * Changes login button to show username if logged in, or redirects to profile
+ */
 watchAuthState((user) => {
     if (user) {
         const username = user.email.split('@')[0];
@@ -180,7 +234,11 @@ watchAuthState((user) => {
     }
 });
 
-// Close modal when clicking outside
+// ============================================
+// Modal Backdrop Click Handler
+// ============================================
+
+// Close modal when clicking on the backdrop (outside the modal content)
 authModal.addEventListener('click', (e) => {
     if (e.target === authModal) {
         hideModal();

@@ -1,21 +1,49 @@
+/**
+ * Profile Picture Module
+ * Handles user profile picture management including:
+ * - Loading and displaying profile pictures from Firebase Storage
+ * - Uploading pictures from file or camera
+ * - Removing profile pictures
+ * - Camera capture with live preview
+ */
+
+// Import Firebase authentication and storage functions
 import { auth, uploadProfilePicture, deleteProfilePicture, db } from './firebase-auth.js';
 import { ref, get, set } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-database.js";
 
-// DOM elements
+// ============================================
+// Global Variables
+// ============================================
+
+// Current authenticated user
 let currentUser = null;
+
+// Current profile picture URL from Firebase Storage
 let currentPhotoURL = null;
-let cameraStream = null; // For direct webcam access
+
+// MediaStream object for direct webcam access
+let cameraStream = null;
+
+// Flag to prevent duplicate event listener initialization
 let listenersInitialized = false;
 
-// Initialize when DOM is loaded
+// ============================================
+// Initialization
+// ============================================
+
+// Initialize profile picture functionality when page loads
+// Sets up user authentication state listener
 document.addEventListener('DOMContentLoaded', () => {
+    // Listen for authentication state changes
     auth.onAuthStateChanged((user) => {
+        // Exit if no user is logged in
         if (!user) return;
 
+        // Set current user and load their profile picture
         currentUser = user;
         loadProfilePicture(user.uid);
 
-        // Prevent duplicate listeners
+        // Setup event listeners only once to prevent duplicates
         if (!listenersInitialized) {
             setupEventListeners();
             listenersInitialized = true;
@@ -23,7 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Load existing profile picture
+/**
+ * Loads the user's existing profile picture from Firebase Database
+ * Displays the picture if it exists, otherwise shows default profile icon
+ * @param {string} userId - The user's Firebase UID
+ */
 async function loadProfilePicture(userId) {
     try {
         const userRef = ref(db, `users/${userId}`);
@@ -47,7 +79,11 @@ async function loadProfilePicture(userId) {
     }
 }
 
-// Display profile picture
+/**
+ * Displays a profile picture in the UI
+ * Hides the default profile icon and shows the uploaded image
+ * @param {string} url - Firebase Storage download URL of the profile picture
+ */
 function displayProfilePicture(url) {
     const profileImg = document.getElementById('profile-picture-img');
     const defaultProfile = document.getElementById('default-profile');
@@ -60,7 +96,10 @@ function displayProfilePicture(url) {
     }
 }
 
-// Display default profile
+/**
+ * Displays the default profile icon
+ * Hides any uploaded profile picture
+ */
 function displayDefaultProfile() {
     const profileImg = document.getElementById('profile-picture-img');
     const defaultProfile = document.getElementById('default-profile');
@@ -72,7 +111,14 @@ function displayDefaultProfile() {
     }
 }
 
-// Setup event listeners
+// ============================================
+// Event Listener Setup
+// ============================================
+
+/**
+ * Sets up all event listeners for profile picture management
+ * Handles file uploads, camera capture, and picture removal
+ */
 function setupEventListeners() {
     // Upload from file input - ONLY USE ONE FILE INPUT
     const fileInput = document.getElementById('profile-picture-input');
@@ -108,7 +154,16 @@ function setupEventListeners() {
     }
 }
 
-// Handle file selection
+// ============================================
+// File Upload Handling
+// ============================================
+
+/**
+ * Handles file selection from the file input
+ * Validates file type and size, shows preview, and uploads to Firebase
+ * @param {Event} event - File input change event
+ * @param {string} source - Source of the file (file-input, camera-fallback, etc.)
+ */
 async function handleFileSelect(event, source) {
     const file = event.target.files[0];
     
@@ -175,7 +230,11 @@ async function handleFileSelect(event, source) {
     }
 }
 
-// Handle remove photo
+/**
+ * Handles removal of the user's profile picture
+ * Requires confirmation before deletion
+ * Removes the picture from Firebase Storage and displays default icon
+ */
 async function handleRemovePhoto() {
     if (!confirm("Are you sure you want to remove your profile picture?")) {
         return;
@@ -196,7 +255,15 @@ async function handleRemovePhoto() {
     }
 }
 
-// Open camera using MediaDevices API (better support)
+// ============================================
+// Camera Capture Functionality
+// ============================================
+
+/**
+ * Opens the camera using MediaDevices API
+ * Creates a modal with live camera feed and capture button
+ * Falls back to file input if camera access is denied
+ */
 async function openCameraWithMediaDevices() {
     // Stop any existing camera stream
     if (cameraStream) {
@@ -258,7 +325,10 @@ async function openCameraWithMediaDevices() {
     }
 }
 
-// Create camera modal HTML
+/**
+ * Creates the camera modal UI with video preview and controls
+ * @returns {HTMLElement} The camera modal DOM element
+ */
 function createCameraModal() {
     const modal = document.createElement('div');
     modal.className = 'camera-modal-overlay';
@@ -298,7 +368,12 @@ function createCameraModal() {
     return modal;
 }
 
-// Capture photo from video stream
+/**
+ * Captures a still image from the camera video stream
+ * Draws the current frame to a canvas and shows preview
+ * @param {HTMLVideoElement} videoElement - The video stream element
+ * @param {HTMLElement} modal - The camera modal element
+ */
 function capturePhoto(videoElement, modal) {
     const canvas = modal.querySelector('#photo-canvas');
     const photoPreview = modal.querySelector('#photo-preview');
@@ -353,7 +428,12 @@ function capturePhoto(videoElement, modal) {
     };
 }
 
-// Separate function for using the captured photo
+/**
+ * Uploads the captured photo to Firebase Storage
+ * Converts canvas to blob, creates file, and calls upload function
+ * @param {HTMLCanvasElement} canvas - Canvas element containing the captured image
+ * @param {HTMLElement} modal - The camera modal element to close after upload
+ */
 async function useCapturedPhoto(canvas, modal) {
     // Convert canvas to blob
     canvas.toBlob(async (blob) => {
@@ -386,7 +466,12 @@ async function useCapturedPhoto(canvas, modal) {
     }, 'image/png', 0.9); // 90% quality
 }
 
-// Restart camera after retake
+/**
+ * Restarts the camera stream for retaking a photo
+ * Re-requests user media after camera was previously stopped
+ * @param {HTMLVideoElement} videoElement - The video stream element
+ * @returns {Promise<boolean>} Success status
+ */
 async function restartCamera(videoElement) {
     try {
         // Get current constraints from previous stream
@@ -417,7 +502,11 @@ async function restartCamera(videoElement) {
     }
 }
 
-// Close camera modal
+/**
+ * Closes the camera modal and stops the camera stream
+ * Stops all media tracks and removes the modal from DOM
+ * @param {HTMLElement} modal - The camera modal element
+ */
 function closeCameraModal(modal) {
     // Stop camera stream
     if (cameraStream) {
@@ -431,7 +520,11 @@ function closeCameraModal(modal) {
     }
 }
 
-// Fallback camera method (uses file input with capture attribute)
+/**
+ * Fallback camera method using file input with capture attribute
+ * Used on mobile devices when MediaDevices API fails
+ * Attempts to use native camera picker on Android/iOS
+ */
 function openCameraFallback() {
     const tempInput = document.createElement('input');
     tempInput.type = 'file';
@@ -454,7 +547,15 @@ function openCameraFallback() {
     tempInput.click();
 }
 
-// Show/hide progress bar
+// ============================================
+// UI Helper Functions
+// ============================================
+
+/**
+ * Shows or hides the upload progress bar
+ * Animates the progress fill when showing
+ * @param {boolean} show - Whether to show or hide the progress bar
+ */
 function showProgress(show) {
     const progressDiv = document.getElementById('upload-progress');
     if (progressDiv) {
@@ -470,7 +571,12 @@ function showProgress(show) {
     }
 }
 
-// Show message
+/**
+ * Displays a temporary message to the user
+ * Auto-hides after 5 seconds
+ * @param {string} text - Message text to display
+ * @param {string} type - Message type (success, error)
+ */
 function showMessage(text, type) {
     const messageDiv = document.getElementById('upload-message');
     if (messageDiv) {
@@ -485,5 +591,9 @@ function showMessage(text, type) {
     }
 }
 
-// Make functions available globally
+// ============================================
+// Global Exports
+// ============================================
+
+// Make camera function globally accessible for onclick handlers
 window.openCameraWithMediaDevices = openCameraWithMediaDevices;

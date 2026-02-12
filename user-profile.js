@@ -1,7 +1,19 @@
+/**
+ * User Profile Module
+ * Displays user profile information from Firebase Database
+ * Renders tools, mineral samples, scores, and achievements
+ * Integrates with Firebase Authentication and real-time database
+ */
+
+// Import Firebase authentication and database functions
 import { auth, watchAuthState, logoutUser, db } from './firebase-auth.js';
 import { ref, get } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-database.js";
 
-// Image mapping for samples and tools
+// ============================================
+// Data Mappings and Configuration
+// ============================================
+
+// Maps sample/tool names to their image file paths
 const sampleImages = {
     'basalt': 'images/basalt.png',
     'carbonateRock': 'images/carbonateRock.png',
@@ -16,6 +28,16 @@ const sampleImages = {
     'extractor': 'images/extractor.png',
 };
 
+// ============================================
+// Utility Functions
+// ============================================
+
+/**
+ * Converts camelCase or snake_case names to readable text
+ * Example: 'smeciteClay' -> 'Smecite Clay'
+ * @param {string} name - The name to format
+ * @returns {string} Formatted name
+ */
 // Helper function to format names nicely
 function formatName(name) {
     return name
@@ -25,6 +47,9 @@ function formatName(name) {
         .trim();
 }
 
+/**
+ * Maps achievement keys to their badge image file paths
+ */
 // Add achievement images mapping 
 const achievementImages = {
     'firstDrill': 'images/achievements/firstdrillbadge.png',
@@ -38,6 +63,10 @@ const achievementImages = {
     'allRocksMastered': 'images/achievements/allrocksbadge.png',
 };
 
+/**
+ * Defines achievement titles and descriptions
+ * Displayed to users regardless of unlock status
+ */
 // Add achievement titles and descriptions 
 const achievementInfo = {
     'firstDrill': {
@@ -78,6 +107,12 @@ const achievementInfo = {
     }
 };
 
+/**
+ * Formats ISO date strings into readable locale-specific format
+ * Example: '2024-12-15T10:30:00Z' -> 'Dec 15, 2024'
+ * @param {string} dateString - ISO format date string
+ * @returns {string} Formatted date or empty string if invalid
+ */
 // Add this helper function to format dates
 function formatDate(dateString) {
     if (!dateString) return '';
@@ -94,6 +129,15 @@ function formatDate(dateString) {
     }
 }
 
+// ============================================
+// Authentication State Management
+// ============================================
+
+/**
+ * Watches for authentication state changes
+ * Loads user profile when user is authenticated
+ * Redirects to login page if user logs out
+ */
 // Watch for authentication state changes
 watchAuthState(async (user) => {
     if (user) {
@@ -105,6 +149,15 @@ watchAuthState(async (user) => {
     }
 });
 
+// ============================================
+// Data Loading Functions
+// ============================================
+
+/**
+ * Fetches user profile data from Firebase Realtime Database
+ * Includes profile info, inventory, scores, and achievements
+ * @param {string} uid - The user's Firebase UID
+ */
 // Load user profile from Firebase
 async function loadUserProfile(uid) {
     const userRef = ref(db, `users/${uid}`);
@@ -123,6 +176,11 @@ async function loadUserProfile(uid) {
     }
 }
 
+/**
+ * Displays all user profile data on the page
+ * Renders welcome name, profile info, and all content sections
+ * @param {Object} data - Complete user data from Firebase
+ */
 // Display all user data on the page
 function displayData(data) {
     document.getElementById('loading').style.display = 'none';
@@ -165,6 +223,15 @@ function displayData(data) {
     displayAchievements(data);
 }
 
+// ============================================
+// Content Rendering Functions
+// ============================================
+
+/**
+ * Renders user's tools/equipment from inventory
+ * Supports both array and object formats from database
+ * @param {Object} data - User data object containing inventory
+ */
 // Display tools from inventory
 function displayTools(data) {
     const tools = data.inventory?.tools;
@@ -209,6 +276,11 @@ function displayTools(data) {
     }
 }
 
+/**
+ * Renders mineral samples with amount and high score
+ * Handles different data formats from database
+ * @param {Object} data - User data object containing inventory samples
+ */
 // Display mineral samples from inventory
 function displaySamples(data) {
     const samples = data.inventory?.samples;
@@ -263,6 +335,11 @@ function displaySamples(data) {
     }
 }
 
+/**
+ * Renders user scores section
+ * Formats total score to 2 decimal places
+ * @param {Object} data - User data object containing scores
+ */
 // Display scores section
 function displayScores(data) {
     const scores = data.scores;
@@ -299,6 +376,12 @@ function displayScores(data) {
     }
 }
 
+/**
+ * Renders achievements with locked/unlocked states
+ * Displays achievement cards with unlock dates and descriptions
+ * Handles multiple data formats (boolean, object, number, string)
+ * @param {Object} data - User data object containing achievements
+ */
 // Display achievements with locked/unlocked states
 function displayAchievements(data) {
     const achievements = data.achievements || {};
@@ -411,7 +494,11 @@ function displayAchievements(data) {
     }
 }
 
-// Logout button event listener
+// ============================================
+// Event Listeners
+// ============================================
+
+// Logout button - signs user out and redirects to home page
 document.getElementById('logout-btn').addEventListener('click', () => {
     logoutUser().then(() => {
         window.location.href = "index.html";

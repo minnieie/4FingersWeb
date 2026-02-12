@@ -1,6 +1,14 @@
+/**
+ * Firebase Authentication Module
+ * Handles user authentication, profile management, and profile picture uploads/storage
+ * Integrates with Firebase Authentication, Realtime Database, and Cloud Storage
+ */
+
+// Import Firebase configuration
 import { firebaseConfig } from './firebase-config.js';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-// Import Firebase Auth functions
+
+// Import Firebase Auth functions for user authentication
 import { 
     getAuth, 
     signInWithEmailAndPassword, 
@@ -8,13 +16,15 @@ import {
     onAuthStateChanged, 
     signOut 
 } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-// Import Firebase Database functions
+
+// Import Firebase Database functions for user data storage
 import { 
     getDatabase, 
     ref, 
     set 
 } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-database.js";
-// Import Firebase Storage functions
+
+// Import Firebase Storage functions for profile picture management
 import { 
     getStorage,
     ref as storageRef,
@@ -23,14 +33,27 @@ import {
     deleteObject 
 } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-storage.js";
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
-// Initialize Storage
-const storage = getStorage(app);
+// ============================================
+// Firebase Initialization
+// ============================================
 
-// Helper function to translate technical errors into human-friendly ones
+// Initialize Firebase app with configuration
+const app = initializeApp(firebaseConfig);
+
+// Get references to Firebase services
+const auth = getAuth(app); // Authentication service
+const db = getDatabase(app); // Realtime Database service
+const storage = getStorage(app); // Cloud Storage service
+
+// ============================================
+// Helper Functions
+// ============================================
+
+/**
+ * Translates Firebase error codes into user-friendly error messages
+ * @param {string} errorCode - Firebase error code
+ * @returns {string} Human-readable error message
+ */
 const getFriendlyErrorMessage = (errorCode) => {
     switch (errorCode) {
         case 'auth/invalid-email':
@@ -50,7 +73,11 @@ const getFriendlyErrorMessage = (errorCode) => {
     }
 };
 
-// Function to create initial achievements structure - EXACT same as Unity
+/**
+ * Creates the initial achievements structure for new users
+ * Matches the structure used in Unity version (DatabaseManager.cs)
+ * @returns {Object} Object containing all available achievements with unlocked status
+ */
 const createInitialAchievements = () => {
     return {
         firstDrill: {
@@ -101,7 +128,14 @@ const createInitialAchievements = () => {
     };
 };
 
-// Function to create user profile in database - EXACT Unity structure
+/**
+ * Creates a new user profile in the Realtime Database
+ * Initializes user data with profile info, inventory, tools, samples, scores, and achievements
+ * Matches the exact structure used in Unity version (DatabaseManager.cs)
+ * @param {string} userId - The Firebase user ID
+ * @param {string} email - The user's email address
+ * @returns {Promise<Object>} Success status and message
+ */
 const createUserProfile = async (userId, email) => {
     try {
         const userRef = ref(db, `users/${userId}`);
@@ -156,7 +190,17 @@ const createUserProfile = async (userId, email) => {
     }
 };
 
-// Updated Logic Wrappers
+// ============================================
+// Authentication Functions
+// ============================================
+
+/**
+ * Authenticates a user with email and password
+ * Updates the user's last login timestamp in the database
+ * @param {string} email - User's email address
+ * @param {string} password - User's password
+ * @returns {Promise<Object>} Success status, user object, and error message if failed
+ */
 export const loginUser = async (email, password) => {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -171,6 +215,13 @@ export const loginUser = async (email, password) => {
     }
 };
 
+/**
+ * Creates a new user account and initializes their profile
+ * Validates password length, creates auth account, and sets up database profile
+ * @param {string} email - User's email address
+ * @param {string} password - User's password (must be at least 6 characters)
+ * @returns {Promise<Object>} Success status, user object, and error message if failed
+ */
 export const signupUser = async (email, password) => {
     // Client-side validation for password length
     if (password.length < 6) {
@@ -197,11 +248,32 @@ export const signupUser = async (email, password) => {
         return { success: false, message: getFriendlyErrorMessage(error.code) };
     }
 };
-
+/**
+ * Signs out the currently authenticated user
+ * @returns {Promise<void>}
+ */
 export const logoutUser = () => signOut(auth);
+
+/**
+ * Watches for changes in authentication state
+ * Calls the provided callback function whenever the user's authentication status changes
+ * @param {Function} callback - Function to call with the user object or null
+ * @returns {Function} Unsubscribe function
+ */
 export const watchAuthState = (callback) => onAuthStateChanged(auth, callback);
 
-// Upload profile picture to Firebase Storage
+// ============================================
+// Profile Picture Functions
+// ============================================
+
+/**
+ * Uploads a profile picture to Firebase Storage and saves the URL to the user's profile
+ * Validates file type (image only) and size (max 5MB)
+ * @param {string} userId - The user's Firebase UID
+ * @param {File} file - The image file to upload
+ * @param {string} userDisplayName - Optional user display name for filename
+ * @returns {Promise<Object>} Success status, download URL, and message
+ */
 export const uploadProfilePicture = async (userId, file, userDisplayName = null) => {
     try {
         // Validate file
@@ -255,7 +327,13 @@ export const uploadProfilePicture = async (userId, file, userDisplayName = null)
     }
 };
 
-// Delete profile picture from Firebase Storage
+/**
+ * Deletes the user's profile picture from Firebase Storage and database
+ * Removes both the file from storage and the URL reference from the user's profile
+ * @param {string} userId - The user's Firebase UID
+ * @param {string} currentPhotoURL - Optional URL of the current profile picture
+ * @returns {Promise<Object>} Success status and message
+ */
 export const deleteProfilePicture = async (userId, currentPhotoURL = null) => {
     try {
         // If we have a current photo URL, try to delete it from storage
@@ -291,7 +369,11 @@ export const deleteProfilePicture = async (userId, currentPhotoURL = null) => {
     }
 };
 
-// Get user's profile picture URL
+/**
+ * Retrieves the user's profile picture URL from the database
+ * @param {string} userId - The user's Firebase UID
+ * @returns {Promise<string|null>} The download URL of the profile picture or null if not found
+ */
 export const getProfilePictureURL = async (userId) => {
     try {
         const userRef = ref(db, `users/${userId}/profile/photoURL`);
@@ -304,5 +386,9 @@ export const getProfilePictureURL = async (userId) => {
     }
 };
 
-// Export storage instance
+// ============================================
+// Firebase Service Exports
+// ============================================
+
+// Export Firebase service instances for use in other modules
 export { auth, db, storage };

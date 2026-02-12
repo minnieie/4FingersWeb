@@ -1,8 +1,25 @@
+/**
+ * Firebase Leaderboard Module
+ * Fetches user data from Firebase, processes scores, and displays a dynamic leaderboard
+ * Supports filtering by rock type and displays statistics (top score, average score, explorer count)
+ * Auto-refreshes every 30 seconds
+ */
+
+// Import Firebase database reference and functions
 import { db } from './firebase-auth.js';
 import { ref, get } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-database.js";
 
+// ============================================
+// Data and Configuration
+// ============================================
+
+// Stores all user data fetched from database
 let allUsersData = [];
+
+// Currently selected rock type for filtering
 let currentRock = 'totalScore';
+
+// Map of rock keys to display names
 const rockNames = {
     totalScore: 'Total Score',
     basalt: 'Basalt',
@@ -13,17 +30,45 @@ const rockNames = {
     carbonateRock: 'Carbonate Rock'
 };
 
-// DOM Elements
+// ============================================
+// DOM Element References
+// ============================================
+
+// Leaderboard table body where rows are inserted
 const leaderboardBody = document.getElementById('leaderboard-body');
+
+// Loading message displayed while fetching data
 const loadingElement = document.getElementById('loading');
+
+// Container for leaderboard content
 const leaderboardContent = document.getElementById('leaderboard-content');
+
+// No data message displayed when leaderboard is empty
 const noDataElement = document.getElementById('no-data');
+
+// Refresh button to manually update leaderboard
 const refreshBtn = document.getElementById('refresh-btn');
+
+// Rock filter tabs for selecting rock types
 const rockTabs = document.querySelectorAll('.rock-tab');
+
+// Element displaying last update time
 const lastUpdatedTime = document.getElementById('last-updated-time');
+
+// Element displaying current rock name in header
 const currentRockName = document.getElementById('current-rock-name');
+
+// Element displaying score column header
 const scoreHeader = document.getElementById('score-header');
 
+// ============================================
+// Core Functions
+// ============================================
+
+/**
+ * Initializes the leaderboard on page load
+ * Loads initial data and sets up auto-refresh every 30 seconds
+ */
 // Initialize leaderboard
 async function initLeaderboard() {
     try {
@@ -42,6 +87,11 @@ async function initLeaderboard() {
     }
 }
 
+/**
+ * Fetches all user data from Firebase and processes it for leaderboard display
+ * Extracts scores, samples collected, and account information
+ * Matches the database structure created in Unity (DatabaseManager.cs)
+ */
 // Load leaderboard data from Firebase
 async function loadLeaderboardData() {
     try {
@@ -122,6 +172,12 @@ async function loadLeaderboardData() {
     }
 }
 
+/**
+ * Applies the selected rock filter and sorts users accordingly
+ * Updates statistics (top score, average score, explorer count)
+ * Updates UI to show selected rock type
+ * @param {string} rockKey - The rock type to filter by ('totalScore' or specific rock name)
+ */
 // Apply rock filter
 function applyRockFilter(rockKey) {
     currentRock = rockKey;
@@ -179,6 +235,13 @@ function applyRockFilter(rockKey) {
     renderLeaderboard(filteredData, rockKey);
 }
 
+/**
+ * Renders the leaderboard table rows based on sorted user data
+ * Adds rank-specific styling for top 3 users (gold, silver, bronze)
+ * Displays user avatar, name, score, and total samples collected
+ * @param {Array} users - Sorted array of user objects
+ * @param {string} rockKey - The rock type being displayed
+ */
 // Render leaderboard table
 function renderLeaderboard(users, rockKey) {
     leaderboardBody.innerHTML = '';
@@ -233,6 +296,10 @@ function renderLeaderboard(users, rockKey) {
     });
 }
 
+/**
+ * Updates the "last updated" timestamp display
+ * Shows the current time in HH:MM format
+ */
 // Update last updated time
 function updateLastUpdatedTime() {
     const now = new Date();
@@ -243,6 +310,9 @@ function updateLastUpdatedTime() {
     lastUpdatedTime.textContent = timeString;
 }
 
+/**
+ * Shows the leaderboard content and hides loading/no-data states
+ */
 // Show leaderboard content
 function showLeaderboard() {
     loadingElement.style.display = 'none';
@@ -250,6 +320,9 @@ function showLeaderboard() {
     leaderboardContent.style.display = 'block';
 }
 
+/**
+ * Displays no-data message and hides leaderboard content
+ */
 // Show no data message
 function showNoData() {
     loadingElement.style.display = 'none';
@@ -257,6 +330,10 @@ function showNoData() {
     noDataElement.style.display = 'block';
 }
 
+/**
+ * Displays an error message in place of the loading state
+ * @param {string} message - The error message to display
+ */
 // Show error message
 function showErrorMessage(message) {
     loadingElement.innerHTML = `
@@ -267,13 +344,18 @@ function showErrorMessage(message) {
     `;
 }
 
+// ============================================
 // Event Listeners
+// ============================================
+
+// Rock tab click handlers - filter leaderboard by selected rock type
 rockTabs.forEach(tab => {
     tab.addEventListener('click', () => {
         applyRockFilter(tab.dataset.rock);
     });
 });
 
+// Refresh button click handler - manually update leaderboard data
 refreshBtn.addEventListener('click', async () => {
     refreshBtn.disabled = true;
     refreshBtn.innerHTML = '<span class="refresh-icon">⟳</span> Refreshing...';
@@ -287,5 +369,5 @@ refreshBtn.addEventListener('click', async () => {
     }, 1000);
 });
 
-// Initialize when DOM is loaded
+// Initialize leaderboard when page loads
 document.addEventListener('DOMContentLoaded', initLeaderboard);
