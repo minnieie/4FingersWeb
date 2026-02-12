@@ -5,7 +5,7 @@
  */
 
 // Import authentication functions from firebase-auth module
-import { auth, loginUser, signupUser, logoutUser, watchAuthState } from './firebase-auth.js';
+import { auth, loginUser, signupUser, logoutUser, watchAuthState } from './public/firebase-auth.js';
 
 // ============================================
 // DOM Element References
