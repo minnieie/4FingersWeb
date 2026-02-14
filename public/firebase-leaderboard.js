@@ -23,7 +23,6 @@ let currentRock = 'totalScore';
 const rockNames = {
     totalScore: 'Total Score',
     basalt: 'Basalt',
-    water: 'Water',
     regolith: 'Regolith',
     smeciteClay: 'Smecite Clay',
     gypsum: 'Gypsum',

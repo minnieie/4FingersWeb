@@ -20,7 +20,6 @@ const sampleImages = {
     'gypsum': 'images/gypsum.png',
     'regolith': 'images/regolith.png',
     'smeciteClay': 'images/smeciteClay.png',
-    'water': 'images/water.png',
     
     // Tool images
     'repairTool': 'images/repairTool.png',
@@ -58,8 +57,7 @@ const achievementImages = {
     'carbonateMaster': 'images/achievements/rock2.png',
     'clayMaster': 'images/achievements/rock3.png',
     'gypsumMaster': 'images/achievements/rock4.png',
-    'waterMaster': 'images/achievements/rock5.png',
-    'regolithMaster': 'images/achievements/rock6.png',
+    'regolithMaster': 'images/achievements/rock5.png',
     'allRocksMastered': 'images/achievements/allrocksbadge.png',
 };
 
@@ -96,10 +94,6 @@ const achievementInfo = {
     'carbonateMaster': {
         title: 'Carbonate Master',
         description: 'Reach level 3 info for Carbonate Rock'
-    },
-    'waterMaster': {
-        title: 'Water Master',
-        description: 'Reach level 3 info for Water'
     },
     'allRocksMastered': {
         title: 'Mars Geologist',
@@ -403,7 +397,6 @@ function displayAchievements(data) {
         'gypsumMaster',
         'clayMaster',
         'carbonateMaster',
-        'waterMaster',
         'allRocksMastered'
     ];
     

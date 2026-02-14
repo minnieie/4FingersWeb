@@ -115,11 +115,6 @@ const createInitialAchievements = () => {
             unlockDate: "",
             score: 0
         },
-        waterMaster: {
-            unlocked: false,
-            unlockDate: "",
-            score: 0
-        },
         allRocksMastered: {
             unlocked: false,
             unlockDate: "",
@@ -150,10 +145,6 @@ const createUserProfile = async (userId, email) => {
             inventory: {
                 tools: ["repairTool", "wiperTool", "extractor"], // Unity uses list, not dictionary
                 samples: {
-                    water: {
-                        amount: 0,
-                        highScore: 0
-                    },
                     regolith: {
                         amount: 0,
                         highScore: 0
