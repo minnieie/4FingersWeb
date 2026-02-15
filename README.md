@@ -1,7 +1,5 @@
 # Rocks & Deepspace - Mars Educational Simulation
 
-![Rocks & Deepspace](images/mars.png)
-
 ## 📋 Project Overview
 
 **Rocks & Deepspace** is a Year 2.2 integrated project by **4Fingers** that combines Unity XR development, Firebase backend systems, 3D environment creation, and UX design. It is an educational Mars simulation designed to help students learn about rocks found on Mars, discover new scientific information, and explore Mars's potential habitability.
